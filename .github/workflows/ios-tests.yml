@@ -10,6 +10,7 @@ on:
 jobs:
   test:
     runs-on: macos-latest
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v4
@@ -30,10 +31,19 @@ jobs:
         run: xcrun simctl list devices available
 
       - name: Test spawn standalone iOS 26.2
+        timeout-minutes: 2
         run: xcrun simctl spawn --standalone CB3DAAF1-A853-4818-BFF6-1CE5393DBEE7 /usr/bin/true && echo "OK 26.2"
 
       - name: Test spawn standalone iOS 26.1
+        timeout-minutes: 2
         run: xcrun simctl spawn --standalone 3C8FC54B-47D7-4289-95E1-693973B7FFB7 /usr/bin/true && echo "OK 26.1"
 
-      - name: Run iOS Simulator Arm64 Tests
+      - name: Run iOS Simulator Arm64 Tests (no timeout for debugging)
+        timeout-minutes: 20
         run: ./gradlew :composeApp:iosSimulatorArm64Test --info
+
+      - name: Show CoreSimulator logs
+        if: always()
+        run: |
+          find ~/Library/Logs/CoreSimulator -name "*.log" -print0 | \                                                                                 
+          xargs -0 ls -t | head -5 | xargs cat                            
