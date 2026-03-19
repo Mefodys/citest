@@ -44,7 +44,7 @@ jobs:
 
       - name: Show device logs
         if: always()
-        run: tail -1000 ~/Library/Logs/CoreSimulator/CB3DAAF1-A853-4818-BFF6-1CE5393DBEE7/system.log || echo "no log"
+        run: tail -1000 ~/Library/Logs/CoreSimulator/3AB3C7C3-411D-430B-AC79-188511B40314/system.log || echo "no log"
 
       - name: Find all CoreSimulator logs
         if: always()
