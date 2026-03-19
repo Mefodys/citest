@@ -38,6 +38,9 @@ jobs:
         timeout-minutes: 2
         run: xcrun simctl spawn --standalone 3C8FC54B-47D7-4289-95E1-693973B7FFB7 /usr/bin/true && echo "OK 26.1"
 
+      - name: Create time marker
+        run: touch /tmp/gradle_start_marker
+
       - name: Run iOS Simulator Arm64 Tests
         timeout-minutes: 20
         run: ./gradlew :composeApp:iosSimulatorArm64Test --info
@@ -50,21 +53,21 @@ jobs:
         if: always()
         run: find ~/Library/Logs/CoreSimulator -type f 2>/dev/null || echo "nothing found"
 
-      - name: Find daemon logs
-        if: always()
-        run: |
-          echo "=== Gradle daemon ==="
-          find ~/.gradle/daemon -type f -name "*.log" 2>/dev/null || echo "not found"
-          echo "=== Kotlin daemon ==="
-          find /tmp -name "*kotlin*daemon*" -o -name "*daemon*kotlin*" 2>/dev/null || echo "not found"
-          find ~/.gradle -name "*kotlin*daemon*" 2>/dev/null || echo "not found"
-          echo "=== All gradle logs ==="
-          find ~/.gradle -name "*.log" 2>/dev/null
+#      - name: Find daemon logs
+#        if: always()
+#        run: |
+#          echo "=== Gradle daemon ==="
+#          find ~/.gradle/daemon -type f -name "*.log" 2>/dev/null || echo "not found"
+#          echo "=== Kotlin daemon ==="
+#          find /tmp -name "*kotlin*daemon*" -o -name "*daemon*kotlin*" 2>/dev/null || echo "not found"
+#          find ~/.gradle -name "*kotlin*daemon*" 2>/dev/null || echo "not found"
+#          echo "=== All gradle logs ==="
+#          find ~/.gradle -name "*.log" 2>/dev/null
 
-      - name: Upload CoreSimulator log
+      - name: Show Gradle daemon log
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: coresimulator-log
-          path: /Users/runner/Library/Logs/CoreSimulator/CoreSimulator.log
-          if-no-files-found: warn                            
+        run: find ~/.gradle/daemon -name "*.out.log" -newer /tmp/gradle_start_marker | xargs cat || echo "no daemon log found"
+
+      - name: Show CoreSimulator log
+        if: always()
+        run: tail -500 ~/Library/Logs/CoreSimulator/CoreSimulator.log || echo "no log"
