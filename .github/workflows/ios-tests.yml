@@ -23,5 +23,17 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Show available simulators
+        run: xcrun simctl list devices available
+
+      - name: Test spawn standalone iOS 26.2
+        run: xcrun simctl spawn --standalone CB3DAAF1-A853-4818-BFF6-1CE5393DBEE7 /usr/bin/true && echo "OK 26.2"
+
+      - name: Test spawn standalone iOS 26.1
+        run: xcrun simctl spawn --standalone 3C8FC54B-47D7-4289-95E1-693973B7FFB7 /usr/bin/true && echo "OK 26.1"
+
       - name: Run iOS Simulator Arm64 Tests
         run: ./gradlew :composeApp:iosSimulatorArm64Test
