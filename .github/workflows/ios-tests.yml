@@ -38,12 +38,14 @@ jobs:
         timeout-minutes: 2
         run: xcrun simctl spawn --standalone 3C8FC54B-47D7-4289-95E1-693973B7FFB7 /usr/bin/true && echo "OK 26.1"
 
-      - name: Run iOS Simulator Arm64 Tests (no timeout for debugging)
+      - name: Run iOS Simulator Arm64 Tests
         timeout-minutes: 20
         run: ./gradlew :composeApp:iosSimulatorArm64Test --info
 
-      - name: Show CoreSimulator logs
+      - name: Upload CoreSimulator log
         if: always()
-        run: |
-          find ~/Library/Logs/CoreSimulator -name "*.log" -print0 | \                                                                                 
-          xargs -0 ls -t | head -5 | xargs cat                            
+        uses: actions/upload-artifact@v4
+        with:
+          name: coresimulator-log
+          path: /Users/runner/Library/Logs/CoreSimulator/CoreSimulator.log
+          if-no-files-found: warn                            
