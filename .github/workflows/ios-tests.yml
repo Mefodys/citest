@@ -46,6 +46,21 @@ jobs:
         if: always()
         run: tail -1000 ~/Library/Logs/CoreSimulator/CB3DAAF1-A853-4818-BFF6-1CE5393DBEE7/system.log || echo "no log"
 
+      - name: Find all CoreSimulator logs
+        if: always()
+        run: find ~/Library/Logs/CoreSimulator -type f 2>/dev/null || echo "nothing found"
+
+      - name: Find daemon logs
+        if: always()
+        run: |
+          echo "=== Gradle daemon ==="
+          find ~/.gradle/daemon -type f -name "*.log" 2>/dev/null || echo "not found"
+          echo "=== Kotlin daemon ==="
+          find /tmp -name "*kotlin*daemon*" -o -name "*daemon*kotlin*" 2>/dev/null || echo "not found"
+          find ~/.gradle -name "*kotlin*daemon*" 2>/dev/null || echo "not found"
+          echo "=== All gradle logs ==="
+          find ~/.gradle -name "*.log" 2>/dev/null
+
       - name: Upload CoreSimulator log
         if: always()
         uses: actions/upload-artifact@v4
