@@ -32,11 +32,11 @@ jobs:
 
       - name: Test spawn standalone iOS 26.2
         timeout-minutes: 2
-        run: xcrun simctl spawn --standalone 3AB3C7C3-411D-430B-AC79-188511B40314 /usr/bin/true && echo "OK 26.2"
+        run: xcrun simctl spawn --standalone CB3DAAF1-A853-4818-BFF6-1CE5393DBEE7 /usr/bin/true && echo "OK 26.2"
 
       - name: Test spawn standalone iOS 26.1
         timeout-minutes: 2
-        run: xcrun simctl spawn --standalone 488ACAD2-B0E3-48DC-A1DF-53AE667A2FAE /usr/bin/true && echo "OK 26.1"
+        run: xcrun simctl spawn --standalone 3C8FC54B-47D7-4289-95E1-693973B7FFB7 /usr/bin/true && echo "OK 26.1"
 
       - name: Run iOS Simulator Arm64 Tests
         timeout-minutes: 20
@@ -44,7 +44,7 @@ jobs:
 
       - name: Show device logs
         if: always()
-        run: tail -1000 ~/Library/Logs/CoreSimulator/3AB3C7C3-411D-430B-AC79-188511B40314/system.log || echo "no log"
+        run: tail -1000 ~/Library/Logs/CoreSimulator/CB3DAAF1-A853-4818-BFF6-1CE5393DBEE7/system.log || echo "no log"
 
       - name: Find all CoreSimulator logs
         if: always()
