@@ -68,6 +68,9 @@ jobs:
         if: always()
         run: find ~/.gradle/daemon -name "*.out.log" -newer /tmp/gradle_start_marker | xargs cat || echo "no daemon log found"
 
-      - name: Show CoreSimulator log
+      - name: Upload CoreSimulator log
         if: always()
-        run: tail -500 ~/Library/Logs/CoreSimulator/CoreSimulator.log || echo "no log"
+        uses: actions/upload-artifact@v4
+        with:
+          name: coresimulator-log
+          path: ~/Library/Logs/CoreSimulator/CoreSimulator.log
