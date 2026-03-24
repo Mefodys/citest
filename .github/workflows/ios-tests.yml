@@ -74,3 +74,6 @@ jobs:
         with:
           name: coresimulator-log
           path: ~/Library/Logs/CoreSimulator/CoreSimulator.log
+
+      - name: List runtimes
+        run: xcrun simctl list runtimes
