@@ -43,7 +43,7 @@ jobs:
 
       - name: Run iOS Simulator Arm64 Tests
         timeout-minutes: 20
-        run: ./gradlew :composeApp:iosSimulatorArm64Test --info
+        run: ./gradlew iosSimulatorArm64Test --info
 
       - name: Show device logs
         if: always()
