@@ -64,6 +64,17 @@ jobs:
 #          echo "=== All gradle logs ==="
 #          find ~/.gradle -name "*.log" 2>/dev/null
 
+      - name: Run iOS Simulator Arm64 Tests
+        timeout-minutes: 20
+        run: ./gradlew :iosSimulatorArm64Test --info --debug > /tmp/gradle-debug.log 2>&1 || true
+
+      - name: Upload Gradle debug log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-debug-log
+          path: /tmp/gradle-debug.log
+
       - name: Show Gradle daemon log
         if: always()
         run: find ~/.gradle/daemon -name "*.out.log" -newer /tmp/gradle_start_marker | xargs cat || echo "no daemon log found"
